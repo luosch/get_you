@@ -72,12 +72,18 @@
     <div id="panorama"></div>
     <div id="normal_map"></div>
     <script type="text/javascript">
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
-            alert(position.coords.latitude);
-        } else { 
-            alert("你的浏览器不支持获取位置");
+        function showPosition(position) {
+            var latlon = position.coords.latitude + "," + position.coords.longitude;
+            alert(latlon);
         }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("您的浏览器不支持位置获取");
+        }
+
+        getLocation();
     //全景图展示
     var panorama = new BMap.Panorama('panorama');
     panorama.setPosition(new BMap.Point(120.320032, 31.589666)); //根据经纬度坐标展示全景图

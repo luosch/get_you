@@ -15,6 +15,7 @@
   </head>
   <body>
     <div id="demo"></div>
+    <div id="map"></div>
     <p>Click the button to get your coordinates.</p>
     <button onclick="getLocation()">Try It</button>
     <script>
@@ -28,7 +29,11 @@
         }
         function showPosition(position) {
             x.innerHTML = "Latitude: " + position.coords.latitude + 
-            "<br>Longitude: " + position.coords.longitude; 
+            "<br>Longitude: " + position.coords.longitude;
+            var latlon = position.coords.latitude + "," + position.coords.longitude;
+            var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+            +latlon+"&zoom=14&size=400x300&sensor=false";
+            document.getElementById("map").innerHTML = "<img src='"+img_url+"'>";
         }
     </script>
   </body>

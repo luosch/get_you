@@ -19,10 +19,10 @@
 </html>
 <script type="text/javascript">
     var latitude = 0, longitude = 0;
-    function baidu_map() {
+    function baidu_map(longitude, latitude) {
         // 百度地图API功能
         var map = new BMap.Map("allmap");
-        map.centerAndZoom(new BMap.Point(113, 23), 20);
+        map.centerAndZoom(new BMap.Point(longitude, latitude), 20);
 
         var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
         var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
@@ -37,11 +37,7 @@
     }
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-            latitude = position.coords.latitude;    // 你的位置经度
-            longitude = position.coords.longitude;  // 你的位置纬度
-            alert(latitude);
-            alert(longitude);
-            baidu_map();
+            baidu_map(position.coords.longitude, position.coords.latitude);
         });
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";

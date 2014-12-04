@@ -18,6 +18,7 @@
 </body>
 </html>
 <script type="text/javascript">
+    var latitude = 0, longitude = 0;
     function baidu_map() {
         // 百度地图API功能
         var map = new BMap.Map("allmap");
@@ -34,12 +35,12 @@
         map.addControl(top_left_navigation);     
         map.addControl(top_right_navigation); 
     }
-    var latitude = 0, longitude = 0;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             latitude = position.coords.latitude;    // 你的位置经度
             longitude = position.coords.longitude;  // 你的位置纬度
-            alert(typeof(latitude));
+            alert(latitude);
+            alert(longitude);
             baidu_map();
         });
     } else {

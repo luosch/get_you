@@ -18,27 +18,31 @@
 </body>
 </html>
 <script type="text/javascript">
+    function baidu_map() {
+        // 百度地图API功能
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom(new BMap.Point(latitude, longitude), 20);
+
+        var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+        var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+        var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
+        /*缩放控件type有四种类型:
+        BMAP_NAVIGATION_CONTROL_SMALL：仅包含平移和缩放按钮；BMAP_NAVIGATION_CONTROL_PAN:仅包含平移按钮；BMAP_NAVIGATION_CONTROL_ZOOM：仅包含缩放按钮*/
+        
+        //添加控件和比例尺
+        map.addControl(top_left_control);        
+        map.addControl(top_left_navigation);     
+        map.addControl(top_right_navigation); 
+    }
     var latitude = 0, longitude = 0;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             latitude = position.coords.latitude;    // 你的位置经度
             longitude = position.coords.longitude;  // 你的位置纬度
+            alert(typeof(latitude));
+            baidu_map();
         });
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
-    // 百度地图API功能
-    var map = new BMap.Map("allmap");
-    map.centerAndZoom(new BMap.Point(116.404, 39.915), 20);
-
-    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
-    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
-    var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}); //右上角，仅包含平移和缩放按钮
-    /*缩放控件type有四种类型:
-    BMAP_NAVIGATION_CONTROL_SMALL：仅包含平移和缩放按钮；BMAP_NAVIGATION_CONTROL_PAN:仅包含平移按钮；BMAP_NAVIGATION_CONTROL_ZOOM：仅包含缩放按钮*/
-    
-    //添加控件和比例尺
-    map.addControl(top_left_control);        
-    map.addControl(top_left_navigation);     
-    map.addControl(top_right_navigation);    
 </script>

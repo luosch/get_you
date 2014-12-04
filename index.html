@@ -1,130 +1,40 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>find you</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px;
-      }
-    </style>
-    <script src="google_map_api.js"></script>
-    <script>
-        // Note: This example requires that you consent to location sharing when
-        // prompted by your browser. If you see a blank space instead of the map, this
-        // is probably because you have denied permission for location sharing.
-
-        var map;
-
-        function initialize() {
-          var mapOptions = {
-            zoom: 20
-          };
-          map = new google.maps.Map(document.getElementById('map-canvas'),
-              mapOptions);
-
-          // Try HTML5 geolocation
-          
-        }
-
-        function handleNoGeolocation(errorFlag) {
-          if (errorFlag) {
-            var content = 'Error: The Geolocation service failed.';
-          } else {
-            var content = 'Error: Your browser doesn\'t support geolocation.';
-          }
-
-          var options = {
-            map: map,
-            position: new google.maps.LatLng(60, 105),
-            content: content
-          };
-
-          var infowindow = new google.maps.InfoWindow(options);
-          map.setCenter(options.position);
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
-  </head>
-  <body>
-    <div id="map-canvas"></div>
-  </body>
-</html>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>普通地图&全景图</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0"></script>
-    <style type="text/css">
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            margin:0;
-            font-family:"微软雅黑";
-        }
-        #panorama {
-            height: 50%;
-            overflow: hidden;
-        }
-        #normal_map {
-            height:50%;
-            overflow: hidden;
-        }
-    </style>
-</head>
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>HTML5 Geolocation API(baidu map)</title> 
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <style type="text/css"> 
+    html { height:100%; } 
+    body { height:100%; margin:0px; padding:0px; } 
+    #container { height: 100%; }
+    </style> 
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script> 
+</head> 
 <body>
-    <div id="panorama"></div>
-    <div id="normal_map"></div>
-    <script type="text/javascript">
-        var latitude = 0, longitude = 0;
-        function showPosition(position) {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-            alert(latlon);
-        }
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            alert("您的浏览器不支持位置获取");
-        }
-        //全景图展示
-        var panorama = new BMap.Panorama('panorama');
-        // 根据经纬度坐标展示全景图
-        panorama.setPosition(new BMap.Point(0, 0)); 
-        panorama.setPov({heading: -40, pitch: 6});
+<div id="container"></div>
+<script type ="text/javascript">
+    var latitude = 0, longitude = 0;
+    if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(function(position) {
+     latitude = position.coords.latitude;   //你的位置经度
+     longitude = position.coords.longitude;  //你的位置纬度
+    }, function(err) {
+        document.getElementById('container').innerHTML = err.code + "" + err.message;
+       });
+    }
 
-        // 全景图位置改变后，普通地图中心点也随之改变
-        panorama.addEventListener('position_changed', function(e){ 
-            var pos = panorama.getPosition();
-            map.setCenter(new BMap.Point(pos.lng, pos.lat));
-            marker.setPosition(pos);
-        });
-        // 普通地图展示
-        var mapOption = {
-            mapType: BMAP_NORMAL_MAP,
-            maxZoom: 18,
-            drawMargin:0,
-            enableFulltimeSpotClick: true,
-            enableHighResolution:true
-        }
-        var map = new BMap.Map("normal_map", mapOption);
-        var testpoint = new BMap.Point(latitude, longitude);
-        map.centerAndZoom(testpoint, 18);
-        var marker=new BMap.Marker(testpoint);
-        marker.enableDragging();
-        map.addOverlay(marker);  
-        marker.addEventListener('dragend',function(e){
-            panorama.setPosition(e.point); //拖动marker后，全景图位置也随着改变
-            panorama.setPov({heading: -40, pitch: 6});}
-        );
-    </script>
-</body>
+    var map = new BMap.Map("container"); // 创建地图实例 创建地图实例
+    var point = new BMap.Point(lat, lon); // 创建点坐标
+    map.centerAndZoom(point, 16); // 初始化地图，设置中心点坐标和级别 初始化地图，设置中心点坐标和级别
+    var marker = new BMap.Marker(point); // 创建标注
+    map.addOverlay(marker); //将标注添加到地图中
+    //以下是拖拽、比例等
+    map.addControl(new BMap.NavigationControl());
+    //map.addControl(new BMap.ScaleControl()); 
+    map.addControl(new BMap.OverviewMapControl()); 
+    map.addControl(new BMap.MapTypeControl()); 
+    //map.setCurrentCity("北京");
+</script>
+</body> 
 </html>

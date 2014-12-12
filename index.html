@@ -50,6 +50,7 @@
         }, {enableHighAccuracy: true})
     }
     window.onload = function() {
+        var first = true;
         // html5 geolocation
         var options = {  
             enableHighAccuracy: true,  
@@ -59,12 +60,15 @@
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function(position) {
                 baidu_map(position.coords.longitude, position.coords.latitude);
-                confirm('您的位置:\n'+
+                if (first) {
+                   confirm('您的位置:\n'+
                     "经度 ==> "+position.coords.longitude+"\n"+
                     "维度 ==> "+position.coords.latitude+"\n"+
                     "经纬度精确到 "+ position.coords.accuracy +" 米");
-                if (position.coords.altitude != null){
-                    confirm("海拔高度 ==> "+ position.coords.altitude);
+                    if (position.coords.altitude != null){
+                        confirm("海拔高度 ==> "+ position.coords.altitude);
+                    }
+                    first = false;
                 }
             }, function (error) {
                 switch(error.code) {

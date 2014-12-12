@@ -60,9 +60,12 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 baidu_map(position.coords.longitude, position.coords.latitude);
                 confirm('您的位置:\n'+
-                    '经度 ==> '+position.coords.longitude+'\n'+
-                    '维度 ==> '+position.coords.latitude+'\n'+
-                    '海拔 ==> '+position.coords.altitude);
+                    "经度 ==> "+position.coords.longitude+"\n"+
+                    "维度 ==> "+position.coords.latitude+"\n"+
+                    "经纬度精确到 "+ position.coords.accuracy +" 米");
+                if (position.coords.altitude != null){
+                    confirm("海拔高度 ==> "+ position.coords.altitude);
+                }
             }, function (error) {
                 switch(error.code) {
                     case error.PERMISSION_DENIED:
